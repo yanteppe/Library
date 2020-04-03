@@ -31,12 +31,12 @@ logging:
     pattern:
         file: "%d{HH:mm:ss} %-5p [%c] - %m%n"
     level:
-        ROOT: error
-        org.springframework: warn
+        ROOT: info
+        org.springframework: info
         javax.faces: warn
         org.omnifaces: warn
         org.springframework.security: warn
-        org.hibernate: warn
+        org.hibernate: info
         org.hibernate.type.descriptor.sql: warn
 
 #spring:
