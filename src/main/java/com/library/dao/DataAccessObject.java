@@ -1,16 +1,34 @@
 package com.library.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
 import java.util.List;
 
 public interface DataAccessObject<T> {
+   // Добовление или обновление (save / update)
+   T save(T object);
 
-   T save(T object);      // Добовление или обновление (save / update)
+   // Удаление объекта
+   void remove(T object);
 
-   T get(long id);        // Получение объекта по id
+   // Получение объекта по id
+   T get(long id);
 
-   void remove(T object); // Удаление объекта
+   // Получить все объекты
+   List<T> getAll();
 
-   List<T> getAll();      // Получить все объекты
+   // Получение всех элементов с сортировкой
+   List<T> getAll(Sort sort);
 
+   // Получение всех записей с пагинацией
+   Page<T> getAll(int pageNumber, int pageCount, String sortingField, Direction sortDirection);
+
+   // Поиск объекта по параметру
    List<T> search(String... searchParameter);
+
+   // Поиск записей с пагинацией
+   Page<T> search(int pageNumber, int pageCount, String sortingField, Direction sortDirection, String... searchString);
+
 }

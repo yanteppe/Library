@@ -14,9 +14,7 @@ import javax.persistence.*;
 @DynamicUpdate
 @DynamicInsert
 @SelectBeforeUpdate
-@Setter
-@Getter
-@EqualsAndHashCode(of = "id")
+@Setter @Getter @EqualsAndHashCode(of = "id")
 public class Book {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +61,10 @@ public class Book {
    public Book() {
    }
 
+   /*
+    Конуструктор используется для получени книг - лидеров голосования, у которых больше всего голосов.
+    Для показа на странице получаются только id книги и изображение обложки. Контент книги получается по требованию (Отдельным запросом).
+   */
    public Book(Long id, byte[] coverImage) {
       this.id = id;
       this.coverImage = coverImage;
@@ -70,7 +72,7 @@ public class Book {
 
    /*
     В конструкторе все поля кроме content чтобы при запросе списка книг (select) не загружались большие двоичные данные.
-    Content получется по требованю - нажать на просмотр книги.
+    Content получется по требованю - чтение книги.
    */
    public Book(Long id, String name, Integer pageCount, String isbn, Genre genre, Author author, Publisher publisher,
                Integer publisherYear, byte[] coverImage, String description, long viewCount, long totalRating, long totalVoteCount, int averageRating) {

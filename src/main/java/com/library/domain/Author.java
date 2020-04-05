@@ -24,7 +24,7 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @SelectBeforeUpdate
-@Getter @Setter @EqualsAndHashCode(of = "id")
+@Getter @Setter @EqualsAndHashCode(of = "id") // of = "id" - указание на генерацию equals & hashCode по полю id
 public class Author {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,8 @@ public class Author {
    private String fio;
    private Date birthday;
    /*
-   fetch = FetchType.LAZY - ленивая инициализация, список книг у автора будет вызываться только при непосредственном
-   запросе списка книг. @Basic(fetch = FetchType.LAZY) - не используется
+    fetch = FetchType.LAZY - ленивая инициализация, список книг у автора получается только по требованию - запрос списка книг.
+    @Basic(fetch = FetchType.LAZY) - не используется
    */
    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
    private List<Book> books;

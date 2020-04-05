@@ -18,7 +18,6 @@ public class Publisher {
    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    private String name;
-   // @Basic(fetch = FetchType.LAZY)
    // mappedBy = "publisher" -  по какому полю производится связывание
    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
    private List<Book> books;
