@@ -27,7 +27,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         Обращение к полю Author в объекте Book и получение значения поля fio из объекта Author.
     Если сигнатура метода очень длинна использовать @Query с HQL (Hiberante Query Language)
    */
-   List<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String bookName, String authorFio);
+   Page<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String bookName, String authorFio, Pageable pageable);
 
    // Получения контента книги по id
    @Query("select book.content FROM Book book where book.id =:id")
@@ -56,6 +56,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
    @Query("select new com.library.domain.Book(book.id, book.coverImage) from Book book")
    List<Book> findPopularBooks(Pageable pageable);
 
+   // Найти все книги без контента
+   @Query("select new com.library.domain.Book(book.id, book.name, book.pageCount, book.isbn, book.genre, book.author," +
+         "book.publisher, book.publisherYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
+         "book.totalVoteCount, book.averageRating) from Book book")
+   Page<Book> findAllWithoutContent(Pageable pageable);
+
    /*
     Поиск по жанру, в @Query указываются все необходимые данные.
     @Param - передача именованных параметров в запрос. Ссылка на параметр с синтаксисом =:parameter.
@@ -64,4 +70,16 @@ public interface BookRepository extends JpaRepository<Book, Long> {
          "book.publisher, book.publisherYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
          "book.totalVoteCount, book.averageRating) from Book book where book.genre.id=:genreId")
    Page<Book> findByGenre(@Param("genreId") long genreId, Pageable pageable);
+
+   // Обновление рейтинга книги
+   @Modifying
+   @Query("update Book book set book.totalVoteCount=:totalVoteCount, book.totalRating=:totalRating," +
+         "book.averageRating=:averageRating where book.id =:id")
+   void updateRating(@Param("totalRating") long totalRating, @Param("totalVoteCount") long totalVoteCount,
+                     @Param("averageRating") int averageRating, @Param("id") long id);
+
+   // Обновление статистики просмотра книги
+   @Modifying
+   @Query("update Book book set book.viewCount=:viewCount where book.id =:id")
+   void updateViewCount(@Param("viewCount") long viewCount, @Param("id") long id);
 }

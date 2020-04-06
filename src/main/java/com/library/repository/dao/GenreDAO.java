@@ -1,4 +1,4 @@
-package com.library.dao;
+package com.library.repository.dao;
 
 import com.library.domain.Genre;
 

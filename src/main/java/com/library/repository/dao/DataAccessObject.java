@@ -1,4 +1,4 @@
-package com.library.dao;
+package com.library.repository.dao;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -29,6 +29,6 @@ public interface DataAccessObject<T> {
    List<T> search(String... searchParameter);
 
    // Поиск записей с пагинацией
-   Page<T> search(int pageNumber, int pageCount, String sortingField, Direction sortDirection, String... searchString);
+   Page<T> search(int pageNumber, int pageCount, String sortingField, Direction sortDirection, String... searchingParameter);
 
 }
