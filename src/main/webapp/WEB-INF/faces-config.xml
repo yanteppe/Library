@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <application>
+        <!-- упрощает работу с веб ресурсами (JS, CSS и тд.) -->
+        <resource-handler>org.omnifaces.resourcehandler.UnmappedResourceHandler</resource-handler>
+        <locale-config>
+            <default-locale>ru</default-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>library</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <!-- связывание JSF и Spring контейнеров, чтобы видели бины друг друга -->
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+<!--    <el-resolver>org.springframework.web.jsf.el.WebApplicationContextFacesELResolver</el-resolver>-->
+    </application>
+</faces-config>
