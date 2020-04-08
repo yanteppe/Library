@@ -10,12 +10,14 @@
         <locale-config>
             <default-locale>ru</default-locale>
         </locale-config>
+        <!-- Где будут находится файлы с локалями -->
         <resource-bundle>
+            <!-- library - название Resource Bundle с файлами локализаци -->
             <base-name>library</base-name>
-            <var>msg</var>
+            <var>lang</var> <!-- lang - переменная с помощью которой будет обращение к ресурсу с локалями -->
         </resource-bundle>
-        <!-- связывание JSF и Spring контейнеров, чтобы видели бины друг друга -->
+        <!-- Класс Spring-a для связывание JSF и Spring контейнеро. Чтобы видели бины друг друга -->
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
-<!--    <el-resolver>org.springframework.web.jsf.el.WebApplicationContextFacesELResolver</el-resolver>-->
+        <!-- <el-resolver>org.springframework.web.jsf.el.WebApplicationContextFacesELResolver</el-resolver>-->
     </application>
 </faces-config>
