@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+    <b:row>
+        <div class="genres">
+            <!-- Ссылка на поиск всех жанров -->
+            <p:commandLink styleClass="list-group-item all-genres">
+                <p:outputLabel value="#{lang.all_genres}" styleClass="genre-name all-genres"/>
+            </p:commandLink>
+            <!-- Меню с навзваниями жанров (Поиск книг по жанрам) -->
+            <p:commandLink class="list-group-item">
+                <p:outputLabel value="test" styleClass="genre-name"/>
+            </p:commandLink>
+        </div>
+    </b:row>
+</f:view>
+
+</html>
