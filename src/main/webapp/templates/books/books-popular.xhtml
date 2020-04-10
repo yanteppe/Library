@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+<f:view>
+    <div class="box">
+        <div class="main2">
+            <div class="module-specials">
+                <div class="boxIndent">
+                    <ul class="box-product">
+                        <li>
+                            <!-- p:repeat - цикл по списку популярных книг, данные из метода jsf.controller.BookController.getPopularBooks-->
+                            <p:repeat value="#{bookController.popularBooks}" var="book">
+                                <!-- вставка блока с данными в каждой итерации цикла -->
+                                <div class="row-product">
+                                    <div class="featuredIndent">
+                                        <div class="product_image_container">
+                                            <div class="product_image_shadow">
+                                                <o:graphicImage width="157" height="236" value="#{book.coverImage}" dataURI="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p:repeat>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:view>
+
+</html>
