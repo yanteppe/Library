@@ -6,20 +6,25 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-<!-- Спиоск жаноров отображаемых в левом меню -->
+<!-- Спиоск жанров отображаемых в левом меню -->
 <f:view>
-    <b:row>
-        <div class="genres">
-            <!-- ссылка на поиск всех жанров -->
-            <p:commandLink styleClass="list-group-item all-genres">
-                <p:outputLabel value="#{lang.all_genres}" styleClass="genre-name all-genres"/></p:commandLink>
-            <!-- меню со списком жанров (поиска книг по жанрам), данные из метода jsf.controller.GenreController.getAll -->
-            <p:repeat value="#{genreController.all}" var="genre">
-                <!-- создание ссылки для каждого жанра в цикле-->
-                <p:commandLink class="list-group-item"><p:outputLabel value="#{genre.name}" styleClass="genre-name"/></p:commandLink>
-            </p:repeat>
-        </div>
-    </b:row>
+    <div class="genres">
+        <!--ссылка на поиск всех жанров-->
+        <p:commandLink styleClass="list-group-item all-genres" actionListener="#{bookController.searchAll()}"
+                       update="@([id$=booksList])">
+            <p:outputLabel value="#{lang.all_genres}" styleClass="genre-name all-genres"/>
+        </p:commandLink>
+        <!-- меню со списком жанров (поиска книг по жанрам), данные из метода jsf.controller.GenreController.getAll -->
+        <p:repeat value="#{genreController.all}" var="genre">
+            <!-- создание ссылки для каждого жанра в цикле -->
+            <!-- actionListener - при нажатии ссылки жанра выполняется поиск bookController.searchBooksByGenre(genre.id) -->
+            <!-- update="@([id$=booksList]) - обновление списка книг поле поиска по жанру -->
+            <p:commandLink class="list-group-item" actionListener="#{bookController.searchBooksByGenre(genre.id)}"
+                           update="@([id$=booksList])">
+                <p:outputLabel value="#{genre.name}" styleClass="genre-name"/>
+            </p:commandLink>
+        </p:repeat>
+    </div>
 </f:view>
 
 </html>

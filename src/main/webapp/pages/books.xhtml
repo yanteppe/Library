@@ -5,8 +5,10 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:o="http://omnifaces.org/ui">
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+<!-- Главная страница (шаблон) приложения в которую компонентами вставляются динамически изменяемые элементы -->
 <h:body>
     <!-- ui:composition обязательное указание какой template использовать -->
     <ui:composition template="/templates/books/books-template.xhtml">
@@ -25,6 +27,16 @@
                             rowsPerPageTemplate="10,15,20,30"
                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             lazy="true">
+
+                    <!-- Строка с результатами поиска наж списком книг -->
+                    <f:facet name="header">
+                        <p:outputPanel styleClass="table-header">
+                            <p:outputLabel value="#{lang.founded}: #{bookController.bookPages.totalElements} "/>
+                            <p:outputLabel value="&#160;(#{bookController.getSearchMessage()})"
+                                           rendered="#{bookController.getSearchMessage() != null}"/>
+                                      <!-- rendered: true - данные отображаются, false - не отображаются -->
+                        </p:outputPanel>
+                    </f:facet>
 
                     <!--карточка с данными книги-->
                     <p:outputPanel styleClass="card">
@@ -53,7 +65,8 @@
 
                                 <!--голосование-->
                                 <div style="width:60%; float:right;">
-                                    <p:rating id="rating" value="#{book.averageRating}" styleClass="rating" cancel="false"
+                                    <p:rating id="rating" value="#{book.averageRating}" styleClass="rating"
+                                              cancel="false"
                                               stars="5">
                                     </p:rating>
                                 </div>

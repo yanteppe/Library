@@ -12,9 +12,10 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 import java.util.Map;
 
-/*
-  Класс-модель для постраничного вывода списка книг.
-  Можно использовать для любых данных.
+/**
+ * Класс-модель для постраничного вывода списка книг - таблица на главной странице.<br>
+ * (Так же использутся при выводе результатов поиска по разным критеримя: жанр, автор, назание и т.д. ...)
+ * @param <T> тип указываемый при поиске, например поиск по жанру: LazyDataTable<'Genre'>
  */
 @Getter @Setter
 public class LazyDataTable<T> extends LazyDataModel<T> {
@@ -34,7 +35,7 @@ public class LazyDataTable<T> extends LazyDataModel<T> {
     * @param sortingField параметр сортировки
     * @param sortOrder тип сортировки (ASC, DESC)
     * @param filterBy
-    * @return content List<T>
+    * @return content List<'T'>
     */
    @Override
    public List<T> load(int first, int pageCount, String sortingField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {

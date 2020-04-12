@@ -33,7 +33,7 @@ public class Author {
    private Date birthday;
    /*
     fetch = FetchType.LAZY - ленивая инициализация, список книг у автора получается только по требованию - запрос списка книг.
-    @Basic(fetch = FetchType.LAZY) - не используется
+    @Basic(fetch = FetchType.LAZY) - не используется (deprecated)
    */
    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
    private List<Book> books;
@@ -43,5 +43,3 @@ public class Author {
       return fio;
    }
 }
-
-

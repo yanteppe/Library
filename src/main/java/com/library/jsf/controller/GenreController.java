@@ -28,7 +28,7 @@ public class GenreController implements JSFController<Genre> {
    private int rowsCount = 20;
    private int first;
    @Autowired // Автоматически устанавливает значение поля - Spring подставляет компонент этого тпа.
-   private GenreDAO genreDao;
+   private GenreDAO genreDAO;
    private Genre selectedGenre;
    private LazyDataTable<Genre> lazyModel;
    private Page<Genre> genrePages;
@@ -45,6 +45,6 @@ public class GenreController implements JSFController<Genre> {
 
    // Для отображения всех жанров в левом блоке на странице
    public List<Genre> getAll() {
-      return genreDao.getAll(Sort.by(Sort.Direction.ASC, "name"));
+      return genreDAO.getAll(Sort.by(Sort.Direction.ASC, "name"));
    }
 }
