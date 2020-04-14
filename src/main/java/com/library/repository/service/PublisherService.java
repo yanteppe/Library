@@ -24,7 +24,7 @@ public class PublisherService implements PublisherDAO {
    }
 
    @Override
-   public void remove(Publisher publisher) {
+   public void delete(Publisher publisher) {
       publisherRepository.delete(publisher);
    }
 

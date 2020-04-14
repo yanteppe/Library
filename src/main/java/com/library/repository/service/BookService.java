@@ -49,7 +49,7 @@ public class BookService implements BookDAO {
    }
 
    @Override
-   public void remove(Book book) {
+   public void delete(Book book) {
       bookRepository.delete(book);
    }
 

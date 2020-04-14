@@ -18,7 +18,7 @@
         <p:repeat value="#{genreController.all}" var="genre">
             <!-- создание ссылки для каждого жанра в цикле -->
             <!-- actionListener - при нажатии ссылки жанра выполняется поиск bookController.searchBooksByGenre(genre.id) -->
-            <!-- update="@([id$=booksList]) - обновление списка книг поле поиска по жанру -->
+            <!-- update="@([id$=booksList]) - обновление списка книг после поиска по жанру -->
             <p:commandLink class="list-group-item" actionListener="#{bookController.searchBooksByGenre(genre.id)}"
                            update="@([id$=booksList])">
                 <p:outputLabel value="#{genre.name}" styleClass="genre-name"/>

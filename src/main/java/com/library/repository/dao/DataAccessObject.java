@@ -11,7 +11,7 @@ public interface DataAccessObject<T> {
    T save(T object);
 
    // Удаление объекта
-   void remove(T object);
+   void delete(T object);
 
    // Получение объекта по id
    T get(long id);

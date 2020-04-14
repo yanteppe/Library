@@ -43,6 +43,22 @@ public class GenreController implements JSFController<Genre> {
       return genrePages;
    }
 
+   // TODO: реализовать методы для жанра книги
+   @Override
+   public void add() {
+
+   }
+
+   @Override
+   public void edit() {
+
+   }
+
+   @Override
+   public void delete() {
+
+   }
+
    // Для отображения всех жанров в левом блоке на странице
    public List<Genre> getAll() {
       return genreDAO.getAll(Sort.by(Sort.Direction.ASC, "name"));

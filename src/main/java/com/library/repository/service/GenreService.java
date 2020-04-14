@@ -24,7 +24,7 @@ public class GenreService implements GenreDAO {
    }
 
    @Override
-   public void remove(Genre genre) {
+   public void delete(Genre genre) {
       genreRepository.delete(genre);
    }
 

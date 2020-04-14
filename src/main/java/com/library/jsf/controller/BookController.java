@@ -8,6 +8,9 @@ import com.library.repository.dao.GenreDAO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,31 +28,81 @@ import java.util.ResourceBundle;
 @ManagedBean   // Управляемый JSF bean, связующее звено между беком и JSF
 @SessionScoped // Время жизни бина сессия пользователя, по окончании сессии бин уничтожится
 @Component     // Пометка класса как Spring бина
-@Getter @Setter @Log
+@Getter
+@Setter
+@Log
 public class BookController implements JSFController<Book> {
-   public static final int BOOK_COUNT = 20; // Кол-во книг отображаемых по  умолчанию на странице
+   public static final int BOOK_COUNT_ON_PAGE = 20; // Кол-во книг отображаемых по  умолчанию на странице
    /*
      Из таблицы JSF должны быть ссылки на переменные, без них пагинация dataGrid работает некорректно (не отрабатывает bean)
      Также сохраняется выбранное пользователем значение (кол-во записей на странице).
    */
-   private int rowsCount = BOOK_COUNT;
+   private int rowsCount = BOOK_COUNT_ON_PAGE;
    public static final int POPULAR_BOOKS_COUNT = 5; // Кол-во отображаемых популярных книг (У кого больше всего голосов)
    private SearchType searchType;                   // Сохраняет последний выбранный вариант поиска книг
-   @Autowired               // Можно вызывать спринг бины в JSF бинах - настройка в faces-config.xml - <el-resolver>
+   @Autowired
+   // Можно вызывать спринг бины в JSF бинах - настройка в faces-com.library.config.xml - <el-resolver>
    private BookDAO bookDAO; // Spring автоматически подставит BookService (Spring контейнер по-умолчанию ищет по типу бин-реализацию)
    @Autowired
-   private GenreDAO genreDao;
+   private GenreDAO genreDAO;
+   @Autowired
+   private GenreController genreController;
+   private Book selectedBook;             // Сылка на текущую книгу (для редкатирования, удаления)
    private LazyDataTable<Book> lazyModel; // Класс модель-утилита, постранично выводит данные (работает с компонентами на странице JSF)
+   private byte[] uploadedBookCoverImage; // Массива байт для сохранение обложки книги (Добавление/редактирование)
+   private byte[] uploadedBookPDFContent; // Массив байт для сохранения PDF контент книги (Добавление/редактирование)
    private Page<Book> bookPages;          // Хранит список найденных книг
    private List<Book> popularBooks;       // Хранит полученные популярные книги
-   private String searchText;             // текст поиска
-   private long idGenreToSearch;          // хранит выбранный жанр при поиске по жанру
+   private String searchText;             // Введенный текст поиска
+   private long selectedGenreId;          // Выбранный жанр при поиске книги по жанру
 
-
-   @PostConstruct // метод вызывается после вызова конструктора бина (после создание бина контйнером)
+   // Метод вызывается после вызова конструктора бина (после создание бина контйнером)
+   @PostConstruct
    public void init() {
       // В LazyDataTable передается текущий (this) контроллер для вызывов его методов
       lazyModel = new LazyDataTable<>(this);
+   }
+
+   public void save() {
+      // Если было выбрано новое изображение обложки книги
+      if (uploadedBookCoverImage != null) {
+         selectedBook.setCoverImage(uploadedBookCoverImage);
+      }
+      // Если был выбран новый PDF контент
+      if (uploadedBookPDFContent != null) {
+         selectedBook.setContent(uploadedBookPDFContent);
+      }
+      bookDAO.save(selectedBook);
+      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').hide()");
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').hide()");
+      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').hide()");// вызов JS из java кода
+   }
+
+   @Override
+   public void add() {
+
+   }
+
+   @Override
+   public void edit() {
+      uploadedBookCoverImage = selectedBook.getCoverImage();
+      // При нажатии на редактирование книги выбранный объект Book уже будет записан в переменную selectedBook
+      // Книга отобразится в диалоговом окне
+      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').show()");
+      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+   }
+
+   @Override
+   public void delete() {
+      bookDAO.delete(selectedBook);
+   }
+
+   /**
+    * Очистить загруженный контент из переменной при закрытии диалогового окна.
+    */
+   public void onCloseDialog(CloseEvent event) {
+      uploadedBookPDFContent = null;
    }
 
    /**
@@ -71,7 +124,7 @@ public class BookController implements JSFController<Book> {
       } else {
          switch (searchType) {
             case SEARCH_GENRE:
-               bookPages = bookDAO.findBookByGenre(pageNumber, pageCount, sortingField, sortDirection, idGenreToSearch);
+               bookPages = bookDAO.findBookByGenre(pageNumber, pageCount, sortingField, sortDirection, selectedGenreId);
                break;
             case SEARCH_TEXT:
                bookPages = bookDAO.search(pageNumber, pageCount, sortingField, sortDirection, searchText);
@@ -98,7 +151,7 @@ public class BookController implements JSFController<Book> {
    }
 
    /**
-    * Поиск всех книг для отображения
+    * Поиск и отоборажение всех книг
     */
    public void searchAll() {
       searchType = SearchType.ALL;
@@ -107,11 +160,11 @@ public class BookController implements JSFController<Book> {
    /**
     * Поиск книг по жанру для отображания
     *
-    * @param idGenreToSearch жанр по которому производится поиск
+    * @param genreId жанр по которому производится поиск
     */
-   public void searchBooksByGenre(long idGenreToSearch) {
+   public void searchBooksByGenre(long genreId) {
       searchType = SearchType.SEARCH_GENRE;
-      this.idGenreToSearch = idGenreToSearch;
+      this.selectedGenreId = genreId;
    }
 
    public void searchAction() {
@@ -129,12 +182,10 @@ public class BookController implements JSFController<Book> {
       // Для доступа к файлам локализации
       var bundle = ResourceBundle.getBundle("library", FacesContext.getCurrentInstance().getViewRoot().getLocale());
       String message = null;
-      if (searchType == null) {
-         return null;
-      }
+      if (searchType == null) return null;
       switch (searchType) {
          case SEARCH_GENRE:
-            message = bundle.getString("genre") + ": '" + genreDao.get(idGenreToSearch) + "'";
+            message = bundle.getString("genre") + ": '" + genreDAO.get(selectedGenreId) + "'";
             break;
          case SEARCH_TEXT:
             if (searchText == null || searchText.trim().length() == 0) {
@@ -144,5 +195,50 @@ public class BookController implements JSFController<Book> {
             break;
       }
       return message;
+   }
+
+   /**
+    * Получить PDF контент книги для чтения
+    */
+   public byte[] getPDFContent(long bookId) {
+      byte[] content;
+      if (uploadedBookPDFContent != null) {
+         content = uploadedBookPDFContent;
+      } else {
+         content = bookDAO.getBookContent(bookId);
+      }
+      return content;
+   }
+
+   /**
+    * Загрузка изображения обложки книги. Сохраняется в переменную uploadedBookCoverImage.
+    */
+   public void uploadBookCoverImage(FileUploadEvent event) {
+      if (event.getFile() != null) {
+         uploadedBookCoverImage = event.getFile().getContent();
+      }
+   }
+
+   /**
+    * Загрузка контента книги. Сохраняется в переменную uploadedBookPDFContent.
+    */
+   public void uploadBookPDFContent(FileUploadEvent event) {
+      if (event.getFile() != null) {
+         uploadedBookPDFContent = event.getFile().getContent();
+      }
+   }
+
+   public Page<Book> getBookPages() {
+      return bookPages;
+   }
+
+   /**
+    * Обновить счетчик просмотров книги
+    *
+    * @param viewCount счетчик просмотров книги
+    * @param bookId id просматриваемой книги
+    */
+   public void updateViewCount(long viewCount, long bookId) {
+      bookDAO.updateBookViewCount(viewCount + 1, bookId);
    }
 }

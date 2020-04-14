@@ -25,7 +25,7 @@ public class AuthorService implements AuthorDAO {
    }
 
    @Override
-   public void remove(Author author) {
+   public void delete(Author author) {
       authorRepository.delete(author);
    }
 
