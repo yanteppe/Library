@@ -1,5 +1,6 @@
 package com.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,10 +32,14 @@ public class Author {
    private Long id;
    private String fio;
    private Date birthday;
+
    /*
+    @JsonIgnore - аннотация для REST, игнорировать список книг для запроса получения списка авторов. Иначе Json очень большой
+    + зацикливание так как книги тоже содеражат ссылку на автора.
     fetch = FetchType.LAZY - ленивая инициализация, список книг у автора получается только по требованию - запрос списка книг.
     @Basic(fetch = FetchType.LAZY) - не используется (deprecated)
    */
+   @JsonIgnore
    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
    private List<Book> books;
 

@@ -1,5 +1,6 @@
 package com.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,7 @@ public class Book {
    @Lob - указание на большие данные
    Тип byte[] для двоичных данных, content - pdf или другой формат, сам текст книги
     */
-   @Lob
-   @Column(updatable = false)
+   @JsonIgnore @Lob @Column(updatable = false)
    private byte[] content;
    @Column(name = "page_count")
    private Integer pageCount;

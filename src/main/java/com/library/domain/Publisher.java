@@ -1,5 +1,6 @@
 package com.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Publisher {
    private String name;
    // mappedBy = "publisher" -  по какому полю производится связывание
    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
+   @JsonIgnore
    private List<Book> books;
 
    @Override

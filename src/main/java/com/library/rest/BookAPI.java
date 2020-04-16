@@ -1,4 +1,4 @@
 package com.library.rest;
 
-public class RestAuthor {
+public class BookAPI {
 }
