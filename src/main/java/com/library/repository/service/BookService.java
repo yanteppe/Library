@@ -74,11 +74,15 @@ public class BookService implements BookDAO {
    }
 
    @Override
-   public List<Book> search(String... searchParameter) {
-      //TODO: доработать поиск книги по параметрам
-      //return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(searchParameter[0], "");
+   public List<Book> search(String... searchString) {
       return null;
    }
+
+//   @Override
+//   public List<Book> search(String... searchString) {
+//      return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(searchString[0], searchString[0],
+//            PageRequest.of(1, 1000, Sort.by(Direction.ASC, ""))).getContent();
+//   }
 
    @Override
    public Page<Book> search(int pageNumber, int pageCount, String sortingField, Direction sortDirection, String... searchString) {

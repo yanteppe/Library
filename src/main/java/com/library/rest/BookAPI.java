@@ -38,8 +38,8 @@ public class BookAPI {
    }
 
    @GetMapping("/search")
-   public List<Book> search(@RequestParam("fio") String fio) {
-      return bookService.search(fio);
+   public List<Book> search(@RequestParam("name") String name) {
+      return bookService.search(name);
    }
 
    @GetMapping("/allPage")

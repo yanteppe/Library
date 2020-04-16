@@ -20,6 +20,7 @@ public class Book {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
    private String name;
    /*
    @Lob - указание на большие данные
@@ -28,34 +29,42 @@ public class Book {
     */
    @JsonIgnore @Lob @Column(updatable = false)
    private byte[] content;
+
    @Column(name = "page_count")
    private Integer pageCount;
+
    private String isbn;
-   @ManyToOne
-   @JoinColumn
+
+   @ManyToOne @JoinColumn
    private Genre genre;
    /*
     @ManyToOne - тип связи - множество к одному, один автор может иметь множество книг
     @JoinColumn - для реализоватции двухсторонней связи как в БД. Получение объкта Author.
     Книга содержит автора, автор может содержать множестов книг (@ManyToOne).
     */
-   @ManyToOne
-   @JoinColumn
+   @ManyToOne @JoinColumn
    private Author author;
-   @ManyToOne
-   @JoinColumn
+
+   @ManyToOne @JoinColumn
    private Publisher publisher;
+
    @Column(name = "publisher_year")
    private Integer publisherYear;
+
    @Column(name = "cover_image")
    private byte[] coverImage;
+
    private String description;
+
    @Column(name = "view_count")
    private long viewCount;
+
    @Column(name = "total_rating")
    private long totalRating;
+
    @Column(name = "total_vote_count")
    private long totalVoteCount;
+
    @Column(name = "average_rating")
    private int averageRating;
 
