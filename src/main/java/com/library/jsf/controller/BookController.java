@@ -50,7 +50,7 @@ public class BookController implements JSFController<Book> {
    private Book selectedBook;             // Сылка на текущую книгу (для редкатирования, удаления)
    private LazyDataTable<Book> lazyModel; // Класс модель-утилита, постранично выводит данные (работает с компонентами на странице JSF)
    private byte[] uploadedBookCoverImage; // Массива байт для сохранение обложки книги (Добавление/редактирование)
-   private byte[] uploadedBookPDFContent; // Массив байт для сохранения PDF контент книги (Добавление/редактирование)
+   private byte[] uploadedBookContent; // Массив байт для сохранения PDF контент книги (Добавление/редактирование)
    private Page<Book> bookPages;          // Хранит список найденных книг
    private List<Book> popularBooks;       // Хранит полученные популярные книги
    private String searchText;             // Введенный текст поиска
@@ -69,8 +69,8 @@ public class BookController implements JSFController<Book> {
          selectedBook.setCoverImage(uploadedBookCoverImage);
       }
       // Если был выбран новый PDF контент
-      if (uploadedBookPDFContent != null) {
-         selectedBook.setContent(uploadedBookPDFContent);
+      if (uploadedBookContent != null) {
+         selectedBook.setContent(uploadedBookContent);
       }
       bookDAO.save(selectedBook);
       PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').hide()");
@@ -102,7 +102,7 @@ public class BookController implements JSFController<Book> {
     * Очистить загруженный контент из переменной при закрытии диалогового окна.
     */
    public void onCloseDialog(CloseEvent event) {
-      uploadedBookPDFContent = null;
+      uploadedBookContent = null;
    }
 
    /**
@@ -202,8 +202,8 @@ public class BookController implements JSFController<Book> {
     */
    public byte[] getPDFContent(long bookId) {
       byte[] content;
-      if (uploadedBookPDFContent != null) {
-         content = uploadedBookPDFContent;
+      if (uploadedBookContent != null) {
+         content = uploadedBookContent;
       } else {
          content = bookDAO.getBookContent(bookId);
       }
@@ -224,7 +224,7 @@ public class BookController implements JSFController<Book> {
     */
    public void uploadBookPDFContent(FileUploadEvent event) {
       if (event.getFile() != null) {
-         uploadedBookPDFContent = event.getFile().getContent();
+         uploadedBookContent = event.getFile().getContent();
       }
    }
 

@@ -6,6 +6,7 @@ import com.library.jsf.model.LazyDataTable;
 import com.library.repository.dao.GenreDAO;
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -59,8 +60,18 @@ public class GenreController implements JSFController<Genre> {
 
    }
 
+   public void save() {
+      genreDAO.save(selectedGenre);
+      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogGenre').hide()");
+      //RequestContext.getCurrentInstance().execute("PF('dialogGenre').hide()");
+   }
+
    // Для отображения всех жанров в левом блоке на странице
    public List<Genre> getAll() {
       return genreDAO.getAll(Sort.by(Sort.Direction.ASC, "name"));
+   }
+
+   public List<Genre> find(String name) {
+      return genreDAO.search(name);
    }
 }

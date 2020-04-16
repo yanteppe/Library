@@ -14,8 +14,8 @@
     <!-- ui:composition обязательное указание какой template использовать -->
     <ui:composition template="/templates/books/books-template.xhtml">
         <ui:define name="content">
-            <ui:include src="/templates/dialogs/edit-dialog.xhtml"/>
-            <ui:include src="/templates/dialogs/confirm-dialog.xhtml"/>
+            <ui:include src="/templates/modals/edit-modal.xhtml"/>
+            <ui:include src="/templates/modals/confirm-modal.xhtml"/>
             <!-- Форма должны быть вне таблицы с данными, чтобы отрабатывать все кнопки и ссылки внутри формы -->
             <h:form id="booksForm">
                 <!-- Список данных в виде сетки -->
@@ -67,8 +67,7 @@
 
                                 <!-- Кол-во просмотров -->
                                 <div style="width:20%; float:left; margin-left: 10px; font-size: 14px;">
-                                    <h:outputText value="#{book.viewCount}" styleClass="view-count"
-                                                  id="viewCountLabel"/>
+                                    <h:outputText value="#{book.viewCount}" styleClass="view-count" id="viewCountLabel"/>
                                 </div>
 
                                 <!-- Голосование-->

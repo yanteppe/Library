@@ -15,6 +15,7 @@ import org.primefaces.context.PrimeRequestContext;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
@@ -71,5 +72,9 @@ public class AuthorController implements JSFController<Author> {
    private void showEditAuthorDialog() {
       PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
       //RequestContext.getCurrentInstance().execute("PF('dialogAuthor').show()");
+   }
+
+   public List<Author> find(String fio) {
+      return authorDAO.search(fio);
    }
 }
