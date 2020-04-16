@@ -61,9 +61,9 @@ public class BookAPI {
     */
    @PostMapping(value = "/addContent")
    public boolean addContent(@RequestBody byte[] content, @RequestParam("bookId") long bookId) {
-      Book book = bookService.get(bookId); // сначала получаем саму книгу
-      book.setContent(content); // обновляем контент
-      bookService.save(book); // сохраняем обратно в БД
+      Book book = bookService.get(bookId); // Получение книги по id
+      book.setContent(content);            // Обновление контента у книги
+      bookService.save(book);              // Сохранение обновленной книги в БД
       return true;
    }
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/publisher") // корневой путь
+@RequestMapping(value = "/api/publisher")
 public class PublisherAPI {
    @Autowired
    private PublisherService publisherService;
@@ -22,7 +22,7 @@ public class PublisherAPI {
 
    @GetMapping("/delete")
    public boolean delete(@RequestParam("id") long id) {
-      publisherService.delete(publisherService.get(id));// сначала получаем объект по id, потом его удаляем
+      publisherService.delete(publisherService.get(id));
       return true;
    }
 
@@ -41,15 +41,15 @@ public class PublisherAPI {
       return publisherService.search(name);
    }
 
-   @GetMapping("/allPage")
-   public List<Publisher> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
-      return publisherService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
-   }
-
-   @GetMapping("/searchPage")
-   public List<Publisher> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount,
-                                     @RequestParam("fio") String fio) {
-      // getContent() - чтобы получить коллекцию у объекта Page
-      return publisherService.search(pageNumber, pageCount, "fio", Sort.Direction.ASC, fio).getContent();
-   }
+//   @GetMapping("/allPage")
+//   public List<Publisher> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+//      return publisherService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
+//   }
+//
+//   @GetMapping("/searchPage")
+//   public List<Publisher> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount,
+//                                     @RequestParam("fio") String fio) {
+//      // getContent() - чтобы получить коллекцию у объекта Page
+//      return publisherService.search(pageNumber, pageCount, "fio", Sort.Direction.ASC, fio).getContent();
+//   }
 }

@@ -24,6 +24,7 @@ public class Book {
    /*
    @Lob - указание на большие данные
    Тип byte[] для двоичных данных, content - pdf или другой формат, сам текст книги
+   updatable = false - при обновлении книги поле не добавляется, колонка с контентом обновляется отдельным запросом
     */
    @JsonIgnore @Lob @Column(updatable = false)
    private byte[] content;

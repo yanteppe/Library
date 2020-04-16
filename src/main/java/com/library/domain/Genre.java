@@ -20,7 +20,6 @@ public class Genre {
    @Column(nullable = false) // Значение не может быть null (в БД пустым)
    private Long id;
    private String name;
-   // @Basic(fetch = FetchType.LAZY)
    @JsonIgnore
    @OneToMany(mappedBy = "genre",fetch = FetchType.LAZY)
    private List<Book> books;
