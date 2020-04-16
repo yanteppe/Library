@@ -60,19 +60,6 @@ public class AuthorAPI {
    }
 
    /**
-    * Получение авторов со страницы веб-приложения.
-    * С указанием номера страницы и кол-ва отображаемых книг на странице.
-    *
-    * @param pageNumber номер страницы на витрине книг в веб-прилжении
-    * @param pageCount  кол-во отображаемых книг на странице
-    * @return List авторов на указанной странице
-    */
-   @GetMapping("/allPage") // @RequestParam - получение параметра
-   public List<Author> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
-      return authorService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
-   }
-
-   /**
     * Поиск авторов по ФИО<br>
     * По части имени, фамилии или отчества<br>
     * Например Лермонтов: api/author/search?fio=Лер<br>
@@ -84,6 +71,19 @@ public class AuthorAPI {
    @GetMapping("/search")
    public List<Author> search(@RequestParam("fio") String fio) {
       return authorService.search(fio);
+   }
+
+   /**
+    * Получение авторов со страницы веб-приложения.
+    * С указанием номера страницы и кол-ва отображаемых книг на странице.
+    *
+    * @param pageNumber номер страницы на витрине книг в веб-прилжении
+    * @param pageCount  кол-во отображаемых книг на странице
+    * @return List авторов на указанной странице
+    */
+   @GetMapping("/allPage") // @RequestParam - получение параметра
+   public List<Author> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+      return authorService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
    }
 
 //   /**
