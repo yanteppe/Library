@@ -1,5 +1,5 @@
 server:
-    port: 8989
+    port: 8080
 
 spring:
     datasource:
@@ -30,14 +30,3 @@ logging:
         org.springframework.security: warn
         org.hibernate: info
         org.hibernate.type.descriptor.sql: warn
-
-#spring:
-#    datasource:
-#        password: rootroot
-#        url: jdbc:mysql://localhost:3306/Library
-#        username: root
-#    security:
-#        user:
-#            name: admin
-#            password: admin
-#            roles: manager

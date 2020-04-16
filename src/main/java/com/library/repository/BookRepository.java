@@ -58,7 +58,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
    // Найти все книги без контента
    @Query("select new com.library.domain.Book(book.id, book.name, book.pageCount, book.isbn, book.genre, book.author," +
-         "book.publisher, book.publisherYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
+         "book.publisher, book.publishingYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
          "book.totalVoteCount, book.averageRating) from Book book")
    Page<Book> findAllWithoutContent(Pageable pageable);
 
@@ -67,7 +67,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Param - передача именованных параметров в запрос. Ссылка на параметр с синтаксисом =:parameter.
    */
    @Query("select new com.library.domain.Book(book.id, book.name, book.pageCount, book.isbn, book.genre, book.author, " +
-         "book.publisher, book.publisherYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
+         "book.publisher, book.publishingYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
          "book.totalVoteCount, book.averageRating) from Book book where book.genre.id=:genreId")
    Page<Book> findByGenre(@Param("genreId") long genreId, Pageable pageable);
 

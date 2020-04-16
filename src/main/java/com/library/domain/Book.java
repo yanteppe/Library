@@ -48,10 +48,10 @@ public class Book {
    @ManyToOne @JoinColumn
    private Publisher publisher;
 
-   @Column(name = "publisher_year")
-   private Integer publisherYear;
+   @Column(name = "publishing_year")
+   private Integer publishingYear;
 
-   //@JsonIgnore
+   @JsonIgnore
    @Column(name = "cover_image")
    private byte[] coverImage;
 
@@ -86,7 +86,7 @@ public class Book {
     Content получется по требованю - чтение книги.
    */
    public Book(Long id, String name, Integer pageCount, String isbn, Genre genre, Author author, Publisher publisher,
-               Integer publisherYear, byte[] coverImage, String description, long viewCount, long totalRating, long totalVoteCount, int averageRating) {
+               Integer publishingYear, byte[] coverImage, String description, long viewCount, long totalRating, long totalVoteCount, int averageRating) {
       this.id = id;
       this.name = name;
       this.pageCount = pageCount;
@@ -94,7 +94,7 @@ public class Book {
       this.genre = genre;
       this.author = author;
       this.publisher = publisher;
-      this.publisherYear = publisherYear;
+      this.publishingYear = publishingYear;
       this.coverImage = coverImage;
       this.description = description;
       this.viewCount = viewCount;
