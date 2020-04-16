@@ -53,7 +53,22 @@ public class BookAPI {
 //   }
 
    /**
-    * Добавить PDF контент к определенной книге по id
+    * Добавить изображение обложки к книге по id
+    *
+    * @param coverImage byte[], массив байт - изображение обложки книги
+    * @param bookId     id книги к которой загружается изображение
+    * @return boolean, true если загрузка контента прошла успешно
+    */
+   @PostMapping(value = "/addCoverImage")
+   public boolean addCoverImage(@RequestBody byte[] coverImage, @RequestParam("bookId") long bookId) {
+      Book book = bookService.get(bookId); // Получение книги по id
+      book.setCoverImage(coverImage);      // Обновление контента у книги
+      bookService.save(book);              // Сохранение обновленной книги в БД
+      return true;
+   }
+
+   /**
+    * Добавить PDF контент к книге по id
     *
     * @param content byte[], массив байт контента книги
     * @param bookId  id книги к которой загружается контент (PDF)

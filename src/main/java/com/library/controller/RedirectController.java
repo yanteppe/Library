@@ -28,7 +28,7 @@ public class RedirectController {
 
 //   // если не указываете @RestController
 //   @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//   @ResponseBody
+//   @ResponseBody;
 //   public List<Author> getAuthors(){
 //      return authorService.getAll();
 //   }

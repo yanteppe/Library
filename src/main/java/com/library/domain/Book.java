@@ -51,6 +51,7 @@ public class Book {
    @Column(name = "publisher_year")
    private Integer publisherYear;
 
+   //@JsonIgnore
    @Column(name = "cover_image")
    private byte[] coverImage;
 
