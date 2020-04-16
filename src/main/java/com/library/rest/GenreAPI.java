@@ -42,12 +42,12 @@ public class GenreAPI {
    }
 
    @GetMapping("/allPage")
-   public List<Genre> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
-      return genreService.getAll(pageNumber, pageSize, "fio", Sort.Direction.ASC).getContent();
+   public List<Genre> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount){
+      return genreService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
    }
 
    @GetMapping("/searchPage")
-   public List<Genre> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("fio") String fio){
-      return genreService.search(pageNumber, pageSize, "fio", Sort.Direction.ASC, fio).getContent(); // т.к. возвращается объект Page, надо у него вызвать getContent, чтобы получить коллекцию
+   public List<Genre> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount, @RequestParam("fio") String fio){
+      return genreService.search(pageNumber, pageCount, "fio", Sort.Direction.ASC, fio).getContent(); // т.к. возвращается объект Page, надо у него вызвать getContent, чтобы получить коллекцию
    }
 }
