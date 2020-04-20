@@ -1,6 +1,5 @@
 package com.library.rest;
 
-import com.library.domain.Author;
 import com.library.domain.Book;
 import com.library.repository.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,13 @@ public class BookAPI {
       return true;
    }
 
-   @GetMapping("/delete")
+   @PutMapping("/update")
+   public boolean update(@RequestBody Book book) {
+      bookService.save(book);
+      return true;
+   }
+
+   @DeleteMapping("/delete")
    public boolean delete(@RequestParam("id") long id) {
       bookService.delete(bookService.get(id));// сначала получаем автора по id, потом его удаляем
       return true;
@@ -42,9 +47,9 @@ public class BookAPI {
       return bookService.search(name);
    }
 
-   @GetMapping("/allPage")
-   public List<Book> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
-      return bookService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
+   @GetMapping("/pagination")
+   public List<Book> pagination(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+      return bookService.getAll(pageNumber, pageCount, "name", Sort.Direction.ASC).getContent();
    }
 
 //   @GetMapping("/searchPage")

@@ -23,7 +23,7 @@ public class RedirectController {
 
    @GetMapping(value = "")
    public String baseUrlRedirect(HttpServletRequest request, HttpServletResponse httpServletResponse) {
-      return "redirect:" + request.getRequestURL().append("/index.xhtml").toString();
+      return "redirect:" + request.getRequestURL().append("index.xhtml").toString();
    }
 
 //   // если не указываете @RestController

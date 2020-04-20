@@ -15,39 +15,46 @@ public class GenreAPI {
    private GenreService genreService;
 
    @PostMapping(value = "/add")
-   public boolean add(@RequestBody Genre genre){
+   public boolean add(@RequestBody Genre genre) {
       genreService.save(genre);
       return true;
    }
 
-   @GetMapping("/delete")
-   public boolean delete(@RequestParam("id") long id){
+   @PutMapping(value = "/update")
+   public boolean update(@RequestBody Genre genre) {
+      genreService.save(genre);
+      return true;
+   }
+
+   @DeleteMapping("/delete")
+   public boolean delete(@RequestParam("id") long id) {
       genreService.delete(genreService.get(id));
       return true;
    }
 
    @GetMapping("/get")
-   public Genre get(@RequestParam("id") long id){
+   public Genre get(@RequestParam("id") long id) {
       return genreService.get(id);
    }
 
    @GetMapping("/all")
-   public List<Genre> getGenres(){
+   public List<Genre> getGenres() {
       return genreService.getAll();
    }
 
    @GetMapping("/search")
-   public List<Genre> search(@RequestParam("name") String name){
+   public List<Genre> search(@RequestParam("name") String name) {
       return genreService.search(name);
    }
 
-   @GetMapping("/allPage")
-   public List<Genre> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount){
-      return genreService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
+   @GetMapping("/pagination")
+   public List<Genre> pagination(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+      return genreService.getAll(pageNumber, pageCount, "name", Sort.Direction.ASC).getContent();
    }
 
    @GetMapping("/searchPage")
-   public List<Genre> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount, @RequestParam("fio") String fio){
-      return genreService.search(pageNumber, pageCount, "fio", Sort.Direction.ASC, fio).getContent(); // т.к. возвращается объект Page, надо у него вызвать getContent, чтобы получить коллекцию
+   public List<Genre> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount, @RequestParam("fio") String fio) {
+      // Для получения сиска у объекта Page необходимо вызвать getContent
+      return genreService.search(pageNumber, pageCount, "name", Sort.Direction.ASC, fio).getContent();
    }
 }

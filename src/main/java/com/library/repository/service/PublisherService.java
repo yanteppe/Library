@@ -20,7 +20,7 @@ public class PublisherService implements PublisherDAO {
 
    @Override
    public Publisher save(Publisher publisher) {
-      return null;
+      return publisherRepository.save(publisher);
    }
 
    @Override

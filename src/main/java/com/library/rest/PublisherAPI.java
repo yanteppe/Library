@@ -20,7 +20,13 @@ public class PublisherAPI {
       return true;
    }
 
-   @GetMapping("/delete")
+   @PutMapping(value = "/update")
+   public boolean update(@RequestBody Publisher publisher) {
+      publisherService.save(publisher);
+      return true;
+   }
+
+   @DeleteMapping("/delete")
    public boolean delete(@RequestParam("id") long id) {
       publisherService.delete(publisherService.get(id));
       return true;
@@ -41,11 +47,11 @@ public class PublisherAPI {
       return publisherService.search(name);
    }
 
-//   @GetMapping("/allPage")
-//   public List<Publisher> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
-//      return publisherService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
-//   }
-//
+   @GetMapping("/pagination")
+   public List<Publisher> pagination(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+      return publisherService.getAll(pageNumber, pageCount, "name", Sort.Direction.ASC).getContent();
+   }
+
 //   @GetMapping("/searchPage")
 //   public List<Publisher> searchPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount,
 //                                     @RequestParam("fio") String fio) {

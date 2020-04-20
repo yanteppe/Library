@@ -27,12 +27,24 @@ public class AuthorAPI {
    }
 
    /**
+    * Обновить данные автора.
+    *
+    * @param author обновляемый автор.
+    * @return boolean, true при успешном обновлении автора.
+    */
+   @PutMapping("/update")
+   public boolean update(@RequestBody Author author) {
+      authorService.save(author);
+      return true;
+   }
+
+   /**
     * Уалить автора по id.
     *
     * @param id идентификатора автора
     * @return boolean, true - успешное удаление
     */
-   @GetMapping("/delete")
+   @DeleteMapping("/delete")
    public boolean delete(@RequestParam("id") long id) {
       authorService.delete(authorService.get(id));
       return true;
@@ -74,15 +86,14 @@ public class AuthorAPI {
    }
 
    /**
-    * Получение авторов со страницы веб-приложения.
-    * С указанием номера страницы и кол-ва отображаемых книг на странице.
+    * Получение списка авторов с пагинацией
     *
     * @param pageNumber номер страницы на витрине книг в веб-прилжении
     * @param pageCount  кол-во отображаемых книг на странице
     * @return List авторов на указанной странице
     */
-   @GetMapping("/allPage") // @RequestParam - получение параметра
-   public List<Author> allPage(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
+   @GetMapping("/pagination") // @RequestParam - получение параметра
+   public List<Author> pagination(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageCount") int pageCount) {
       return authorService.getAll(pageNumber, pageCount, "fio", Sort.Direction.ASC).getContent();
    }
 
