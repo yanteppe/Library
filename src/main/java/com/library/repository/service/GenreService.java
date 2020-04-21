@@ -50,8 +50,8 @@ public class GenreService implements GenreDAO {
    }
 
    @Override
-   public List<Genre> search(String... searchParameter) {
-      return genreRepository.findByNameContainingIgnoreCaseOrderByName(searchParameter[0]);
+   public List<Genre> search(String... searchingParameter) {
+      return genreRepository.findByNameContainingIgnoreCaseOrderByName(searchingParameter[0]);
    }
 
    @Override

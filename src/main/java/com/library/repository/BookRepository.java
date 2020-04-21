@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /*
- JpaRepository - интерфейс Spring Data с типовыми операциями с сущностями: CRUD, постраничная загрузка данных (pagination) и т. д.
+ JpaRepository - интерфейс Spring Data с типовыми операциями с сущностями: CRUD, пагинация и т. д.
  @Repository - Spring bean, помечен как Repository.
  JpaRepository<Book, Long> - типизация, типа объекта (Book), тип поля id (Long)
  */
@@ -27,9 +27,24 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         Обращение к полю Author в объекте Book и получение значения поля fio из объекта Author.
     Если сигнатура метода очень длинна использовать @Query с HQL (Hiberante Query Language)
    */
+
+   /**
+    * Найти книгу по названию книги или ФИО автора игнорируя регистр символов.<br>
+    * Метод по сигнатуре которого Hibernate состовляет запрос.
+    *
+    * @param bookName название книги
+    * @param authorFio ФИО автора
+    * @param pageable объект Pageable (пагинация данных)
+    * @return объект Page
+    */
    Page<Book> findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(String bookName, String authorFio, Pageable pageable);
 
-   // Получения контента книги по id
+   /**
+    * Получения контента книги по id
+    *
+    * @param id id книги
+    * @return byte[], контент книги в массиве байт
+    */
    @Query("select book.content FROM Book book where book.id =:id")
    byte[] getContent(@Param("id") long id);
 
@@ -42,6 +57,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
       то @Param("...") не указывать.
     - content=:content - Связывание контента в запросе через ":" с контентом в параметре метода @Param("content").
    */
+
+   /**
+    * Обновить/загрузить PDF контент книги
+    *
+    * @param content PDF контент книги
+    * @param id      id книги
+    */
    @Modifying(clearAutomatically = true)
    @Query("update Book book set book.content=:content where book.id =:id")
    void updateContent(@Param("content") byte[] content, @Param("id") long id);
@@ -53,32 +75,62 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     В сигнатуре метода возвращаемый тип List так как для получения требуется только указание кол-ва получаемых кинг,
     пагинация не требуется.
    */
+
+   /**
+    * Найти самые популярные книги
+    *
+    * @param pageable объект Pageable (пагинация данных)
+    * @return объект Page
+    */
    @Query("select new com.library.domain.Book(book.id, book.coverImage) from Book book")
    List<Book> findPopularBooks(Pageable pageable);
 
-   // Найти все книги без контента
+   /**
+    * Найти все книги без контента
+    *
+    * @param pageable объект Pageable (пагинация данных)
+    * @return объект Page
+    */
    @Query("select new com.library.domain.Book(book.id, book.name, book.pageCount, book.isbn, book.genre, book.author," +
          "book.publisher, book.publishingYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
          "book.totalVoteCount, book.averageRating) from Book book")
    Page<Book> findAllWithoutContent(Pageable pageable);
 
-   /*
-    Поиск по жанру, в @Query указываются все необходимые данные.
-    @Param - передача именованных параметров в запрос. Ссылка на параметр с синтаксисом =:parameter.
-   */
+   // Поиск по жанру, в @Query указываются все необходимые данные.
+   // @Param - передача именованных параметров в запрос. Ссылка на параметр с синтаксисом =:parameter.
+
+   /**
+    * Поиск книги по жанру
+    *
+    * @param genreId  id жанра
+    * @param pageable объект Pageable (пагинация данных)
+    * @return объект Page
+    */
    @Query("select new com.library.domain.Book(book.id, book.name, book.pageCount, book.isbn, book.genre, book.author, " +
          "book.publisher, book.publishingYear, book.coverImage, book.description, book.viewCount, book.totalRating," +
          "book.totalVoteCount, book.averageRating) from Book book where book.genre.id=:genreId")
    Page<Book> findByGenre(@Param("genreId") long genreId, Pageable pageable);
 
-   // Обновление рейтинга книги
+   /**
+    * Обновление рейтинга книги
+    *
+    * @param totalRating    итоговый рейтинг
+    * @param totalVoteCount счетчик голосов за книгу
+    * @param averageRating  средний рейтинг
+    * @param id             id книги
+    */
    @Modifying
    @Query("update Book book set book.totalVoteCount=:totalVoteCount, book.totalRating=:totalRating," +
          "book.averageRating=:averageRating where book.id =:id")
    void updateRating(@Param("totalRating") long totalRating, @Param("totalVoteCount") long totalVoteCount,
                      @Param("averageRating") int averageRating, @Param("id") long id);
 
-   // Обновление статистики просмотра книги
+   /**
+    * Обновление статистики просмотра книги
+    *
+    * @param viewCount кол-во просмотров
+    * @param id        id книги
+    */
    @Modifying
    @Query("update Book book set book.viewCount=:viewCount where book.id =:id")
    void updateViewCount(@Param("viewCount") long viewCount, @Param("id") long id);

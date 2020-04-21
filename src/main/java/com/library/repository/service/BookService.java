@@ -73,16 +73,12 @@ public class BookService implements BookDAO {
       return bookRepository.findAllWithoutContent(PageRequest.of(pageNumber, pageCount, Sort.by(sortDirection, sortingField)));
    }
 
+   // TODO: возможно необходимо переписать... посмотреть позже...
    @Override
-   public List<Book> search(String... searchString) {
-      return null;
+   public List<Book> search(String... searchingParameter) {
+      return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(
+            searchingParameter[0], searchingParameter[0], PageRequest.of(0, 1000, Sort.by(Direction.ASC, "name"))).getContent();
    }
-
-//   @Override
-//   public List<Book> search(String... searchString) {
-//      return bookRepository.findByNameContainingIgnoreCaseOrAuthorFioContainingIgnoreCaseOrderByName(searchString[0], searchString[0],
-//            PageRequest.of(1, 1000, Sort.by(Direction.ASC, ""))).getContent();
-//   }
 
    @Override
    public Page<Book> search(int pageNumber, int pageCount, String sortingField, Direction sortDirection, String... searchString) {
