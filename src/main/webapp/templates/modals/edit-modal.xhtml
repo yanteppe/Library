@@ -17,7 +17,8 @@
             <div class="popup-info">
                 <div class="avatar-box">
                     <!-- Загрузка изображения обложки книги -->
-                    <o:graphicImage width="240" height="320" cache="false" value="#{bookController.uploadedBookCoverImage}"
+                    <o:graphicImage width="240" height="320" cache="false"
+                                    value="#{bookController.uploadedBookCoverImage}"
                                     rendered="#{not empty bookController.uploadedBookCoverImage}" id="bookImage"
                                     dataURI="true"/>
 
@@ -66,6 +67,12 @@
                     <div class="block">
                         <p>#{lang.publisher}</p>
                         <div class="ava-form">
+                            <p:autoComplete id="publisherList" dropdown="true" converter="#{publisherConverter}"
+                                            var="publisher"
+                                            value="#{bookController.selectedBook.publisher}"
+                                            completeMethod="#{publisherController.find}" itemLabel="#{publisher.name}"
+                                            itemValue="#{publisher}" required="true"
+                                            requiredMessage="#{lang.required_publisher}"/>
                         </div>
                     </div>
 
@@ -100,7 +107,8 @@
                         <div class="ava-form">
                             <div class="loaded">
                                 <!-- Загрузка PDF контента книги -->
-                                <p:fileUpload id="contentUpload" fileUploadListener="#{bookController.uploadBookPDFContent}"
+                                <p:fileUpload id="contentUpload"
+                                              fileUploadListener="#{bookController.uploadBookPDFContent}"
                                               mode="advanced"
                                               dragDropSupport="true" label="#{lang.content_load}" auto="true"
                                               styleClass="ui-fileupload"

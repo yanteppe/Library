@@ -28,9 +28,7 @@ import java.util.ResourceBundle;
 @ManagedBean   // Управляемый JSF bean, связующее звено между беком и JSF
 @SessionScoped // Время жизни бина сессия пользователя, по окончании сессии бин уничтожится
 @Component     // Пометка класса как Spring бина
-@Getter
-@Setter
-@Log
+@Getter @Setter @Log
 public class BookController implements JSFController<Book> {
    public static final int BOOK_COUNT_ON_PAGE = 20; // Кол-во книг отображаемых по  умолчанию на странице
    /*
@@ -50,7 +48,7 @@ public class BookController implements JSFController<Book> {
    private Book selectedBook;             // Сылка на текущую книгу (для редкатирования, удаления)
    private LazyDataTable<Book> lazyModel; // Класс модель-утилита, постранично выводит данные (работает с компонентами на странице JSF)
    private byte[] uploadedBookCoverImage; // Массива байт для сохранение обложки книги (Добавление/редактирование)
-   private byte[] uploadedBookContent; // Массив байт для сохранения PDF контент книги (Добавление/редактирование)
+   private byte[] uploadedBookContent;    // Массив байт для сохранения PDF контент книги (Добавление/редактирование)
    private Page<Book> bookPages;          // Хранит список найденных книг
    private List<Book> popularBooks;       // Хранит полученные популярные книги
    private String searchText;             // Введенный текст поиска
@@ -73,8 +71,8 @@ public class BookController implements JSFController<Book> {
          selectedBook.setContent(uploadedBookContent);
       }
       bookDAO.save(selectedBook);
-      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').hide()");
-      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').hide()");
+      //PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').hide()");
+      PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').hide()");
       //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').hide()");// вызов JS из java кода
    }
 
@@ -236,7 +234,7 @@ public class BookController implements JSFController<Book> {
     * Обновить счетчик просмотров книги
     *
     * @param viewCount счетчик просмотров книги
-    * @param bookId id просматриваемой книги
+    * @param bookId    id просматриваемой книги
     */
    public void updateViewCount(long viewCount, long bookId) {
       bookDAO.updateBookViewCount(viewCount + 1, bookId);

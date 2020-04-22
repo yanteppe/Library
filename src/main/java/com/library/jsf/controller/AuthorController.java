@@ -38,14 +38,14 @@ public class AuthorController implements JSFController<Author> {
    @Override
    public void add() {
       selectedAuthor = new Author();
-      showEditAuthorDialog();
+      showEditAuthorModal();
    }
 
    @Override
    public void edit() {
       // При нажатии на редактировать выбранный Author уже будет записан в переменную selectedAuthor
       // он отобразится в диалоговом окне
-      showEditAuthorDialog();
+      showEditAuthorModal();
    }
 
    @Override
@@ -69,7 +69,7 @@ public class AuthorController implements JSFController<Author> {
    /**
     * Показать диалоговое окно с редактированием автора со значениями selectedAuthor.
     */
-   private void showEditAuthorDialog() {
+   private void showEditAuthorModal() {
       PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
       //RequestContext.getCurrentInstance().execute("PF('dialogAuthor').show()");
    }
