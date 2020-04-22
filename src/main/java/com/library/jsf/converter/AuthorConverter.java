@@ -14,8 +14,8 @@ import javax.faces.convert.FacesConverter;
   Конверторы для преобразования выбранного значение из выпадающего списка в конкректный  объект.
   (В модальном окне создания/редактирования книги)
  */
-@FacesConverter(forClass = Author.class)
 @Component
+@FacesConverter(forClass = Author.class)
 public class AuthorConverter implements Converter {
    @Autowired
    private AuthorDAO authorDAO;
