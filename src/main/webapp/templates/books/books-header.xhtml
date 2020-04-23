@@ -33,7 +33,7 @@
                                 <!-- commandButton - вне формы не выполняется. Скрыт (visibility: hidden), вызывается при нажатии Enter -->
                                 <p:commandButton styleClass="search-button" value="search" process="@form"
                                                  update="@([id$=booksList])"
-                                                 actionListener="#{bookController.searchAction}"
+                                                 actionListener="#{bookController.search}"
                                                  style="visibility: hidden"/>
                             </h:form>
                         </div>

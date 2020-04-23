@@ -165,7 +165,7 @@ public class BookController implements JSFController<Book> {
       this.selectedGenreId = genreId;
    }
 
-   public void searchAction() {
+   public void search() {
       searchType = SearchType.SEARCH_TEXT;
    }
 
