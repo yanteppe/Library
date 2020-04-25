@@ -1,4 +1,4 @@
-package com.library.jsf;
+package com.library.jsf.config;
 
 import com.library.jsf.PDFContentServlet;
 import org.primefaces.webapp.filter.FileUploadFilter;
