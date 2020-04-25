@@ -22,14 +22,14 @@
                                 <li><o:graphicImage name="images/books.png" style="height:50px; padding:10px;" dataURI="true"/></li>
                             </ui:fragment>
 
-                            <ui:fragment rendered="${userController.hasRole('ADMIN')}">
+                            <ui:fragment rendered="${userController.role('ADMIN')}">
                                 <li><h:outputLink value="#{request.contextPath}/pages/spr.xhtml"> #{lang.dict}</h:outputLink></li>
                             </ui:fragment>
 
-                            <ui:fragment rendered="${userController.hasRole('ADMIN')}">
+                            <ui:fragment rendered="${userController.role('ADMIN')}">
                                 <li class="colored">
                                     <p:commandLink title="Add button"
-                                                   rendered="${userController.hasRole('ADMIN')}"
+                                                   rendered="${userController.role('ADMIN')}"
                                                    actionListener="#{bookController.search}"
                                                    update="@([id$=dialogEditBook])"
                                                    styleClass="new-book-item">
