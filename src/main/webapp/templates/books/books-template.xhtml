@@ -15,7 +15,7 @@
     <title>${lang.online_library}</title>
 </h:head>
 
-<f:view>
+<f:view locale="#{localeChanger.currentLocale}">
     <ui:include src="books-header.xhtml"/>
     <ui:include src="books-popular.xhtml"/>
     <b:container>

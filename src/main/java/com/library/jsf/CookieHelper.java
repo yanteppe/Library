@@ -10,7 +10,7 @@ public class CookieHelper {
 
    public static void setCookie(String name, String value, int expiry) {
       var facesContext = FacesContext.getCurrentInstance();
-      HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+      var request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
       Cookie cookie = null;
       Cookie[] userCookies = request.getCookies();
       if (userCookies != null && userCookies.length > 0) {
