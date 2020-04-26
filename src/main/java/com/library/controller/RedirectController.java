@@ -18,18 +18,9 @@ import java.util.List;
 @Log // Аннотация Lombok - внедрение логгера в байт код при компиляции (удобный доступ к логеру - log.info(...))
 @Controller
 public class RedirectController {
-   @Autowired
-   private AuthorDAO authorService;
 
    @GetMapping(value = "")
    public String baseUrlRedirect(HttpServletRequest request, HttpServletResponse httpServletResponse) {
-      return "redirect:" + request.getRequestURL().append("index.xhtml").toString();
+      return "redirect:" + request.getRequestURL().append("/index.xhtml").toString();
    }
-
-//   // если не указываете @RestController
-//   @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//   @ResponseBody;
-//   public List<Author> getAuthors(){
-//      return authorService.getAll();
-//   }
 }

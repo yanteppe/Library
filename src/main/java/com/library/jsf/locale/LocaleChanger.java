@@ -3,11 +3,12 @@ package com.library.jsf.locale;
 import com.library.jsf.CookieHelper;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Locale;
 
-@Named
+@ManagedBean (eager = true)
 @SessionScoped
 public class LocaleChanger implements Serializable {
    private Locale currentLocale = new Locale("ru");

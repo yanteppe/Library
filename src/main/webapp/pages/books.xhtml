@@ -88,7 +88,7 @@
                         </div>
 
                         <!-- Инструменты администратора (редактирование, удаление)-->
-                        <p:outputPanel layout="block" styleClass="admin-region">
+                        <p:outputPanel layout="block" styleClass="admin-region" rendered="${userController.role('ADMIN')}">
                             <p:commandLink title="#{lang.delete}"
                                            action="#{bookController.delete()}" update=":booksForm:booksList">
                                 <p:confirm header="#{lang.confirm}" message="#{lang.prompt_delete}"

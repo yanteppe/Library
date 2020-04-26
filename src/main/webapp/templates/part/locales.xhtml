@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title>Title</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
 
-</body>
+<f:view>
+    <div class="lang">
+        <h:form>
+            <div class="lang">
+                <h:commandLink actionListener="#{localeChanger.changeLocale('ru')}" value="#{lang.ru}"
+                               styleClass="#{localeChanger.currentLocale == 'ru' ? 'active':''} lang-link"/>
+                <h:commandLink actionListener="#{localeChanger.changeLocale('en')}" value="#{lang.en}"
+                               styleClass="#{localeChanger.currentLocale == 'en' ? 'active':''} lang-link"/>
+            </div>
+        </h:form>
+    </div>
+</f:view>
+
 </html>
