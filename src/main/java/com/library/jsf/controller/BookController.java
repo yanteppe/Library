@@ -8,6 +8,7 @@ import com.library.repository.dao.GenreDAO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FileUploadEvent;
@@ -21,6 +22,8 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -78,7 +81,22 @@ public class BookController implements JSFController<Book> {
 
    @Override
    public void add() {
+      selectedBook = new Book();
+      uploadedBookCoverImage = loadDefaultCoverBookImage();
+      uploadedBookContent = null;
+      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
+      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+   }
 
+   private byte[] loadDefaultCoverBookImage() {
+      var stream = FacesContext.getCurrentInstance()
+            .getExternalContext().getResourceAsStream("/resources/images/no-cover.jpg");
+      try {
+         return IOUtils.toByteArray(stream);
+      } catch (IOException IOException) {
+         IOException.printStackTrace();
+      }
+      return null;
    }
 
    @Override

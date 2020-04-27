@@ -1,12 +1,306 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title>Title</title>
-</head>
-<body>
+<!DOCTYPE html>
 
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+<h:body>
+    <ui:composition template="/templates/directory/directory-template.xhtml">
+        <ui:define name="content">
+            <!-- Подключение модального окна подтверждения при удалении -->
+            <ui:include src="/templates/modals/confirm-modal.xhtml"/>
+            <!-- Вкладки для редактирования справочников -->
+            <p:tabView dynamic="true" cache="false" id="tabView">
+                <p:ajax event="tabChange" listener="#{directoryController.onTabChange}"/>
+                <!-- Вкладка для редактирования авторов-->
+                <p:tab title="#{lang.authors}" id="tabAuthors">
+                    <h:form id="authorForm">
+                        <p:dataTable id="authorList" var="author" value="#{authorController.lazyModel}"
+                                     paginatorPosition="bottom"
+                                     paginator="true"
+                                     rows="#{authorController.rowsCount}"
+                                     first="#{authorController.first}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     style="margin:5px" lazy="true"
+                                     rowsPerPageTemplate="20,50,100">
+
+                            <!-- Кол-во найденых элементов для отображения -->
+                            <f:facet name="header">
+                                <p:outputLabel value="#{lang.founded}: #{authorController.authorPages.totalElements}"
+                                               id="authorCount"/>
+                            </f:facet>
+
+                            <!-- Колонка - Имя автора -->
+                            <p:column headerText="#{lang.name}">
+                                <p:commandLink title="#{lang.edit}" action="#{authorController.edit()}"
+                                               update="@([id$=dialogAuthor])" process="@form" immediate="true">
+                                    <h:outputText value="#{author.fio}"/>
+                                    <!-- При выполнении edit() - записись в переменную selectedAuthor текущего автора для отображения в модальном окне -->
+                                    <f:setPropertyActionListener value="#{author}"
+                                                                 target="#{authorController.selectedAuthor}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Дата рождения автора -->
+                            <p:column headerText="#{lang.birthday}">
+                                <p:commandLink title="#{lang.edit}" action="#{authorController.edit()}"
+                                               update="@([id$=dialogAuthor])" process="@form" immediate="true">
+                                    <p:outputLabel value="#{author.birthday}" style="width:100%">
+                                        <f:convertDateTime pattern="yyyy-MM-dd" type="date"/>
+                                    </p:outputLabel>
+                                    <f:setPropertyActionListener value="#{author}"
+                                                                 target="#{authorController.selectedAuthor}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Удаление -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.delete}"
+                                               action="#{authorController.delete()}"
+                                               update="@([id$=authorList])" process="@form"
+                                               immediate="true">
+                                    <o:graphicImage name="images/delete.png" styleClass="delete-icon" dataURI="true"/>
+                                    <p:confirm header="#{lang.confirm}" message="#{lang.prompt_delete}?"
+                                               icon="ui-icon-alert"/>
+                                    <f:setPropertyActionListener value="#{author}"
+                                                                 target="#{authorController.selectedAuthor}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Редактирование -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.edit}" action="#{authorController.edit()}"
+                                               update="@([id$=dialogAuthor])" process="@form" immediate="true">
+                                    <o:graphicImage name="images/edit.png" styleClass="edit-icon" dataURI="true"/>
+                                    <f:setPropertyActionListener value="#{author}"
+                                                                 target="#{authorController.selectedAuthor}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <!-- Модальное окно для редактирования автора -->
+                    <p:dialog id="dialogAuthor" header="#{lang.author}" widgetVar="dialogAuthor" resizable="false"
+                              modal="true"
+                              showEffect="fade"
+                              closeOnEscape="true">
+
+                        <h:form id="dialogAuthorForm">
+                            <div class="popup-info">
+                                <div class="ava-info no-border">
+                                    <div class="block">
+                                        <p>#{lang.fio}</p>
+                                        <div class="ava-form">
+                                            <p:inputText id="fio" value="#{authorController.selectedAuthor.fio}"
+                                                         required="true"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="block">
+                                        <p>#{lang.birthday}</p>
+                                        <div class="ava-form">
+                                            <p:calendar value="#{authorController.selectedAuthor.birthday}"
+                                                        style="width:100%" pattern="yyyy-MM-dd"
+                                                        mask="true" required="true"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="block">
+                                        <div class="ava-form">
+                                            <p:commandButton value="#{lang.save}"
+                                                             actionListener="#{authorController.save}"
+                                                             update="@([id$=authorList])"
+                                                             process="@([id$=dialogAuthorForm])" style="float:right"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                </p:tab>
+
+                <!-- Вкладка редактирования жанров-->
+                <p:tab title="#{lang.genres}" id="tabGenres">
+                    <h:form id="genreForm">
+                        <p:dataTable id="genreList" var="genre" value="#{genreController.lazyModel}"
+                                     paginatorPosition="bottom"
+                                     paginator="true"
+                                     rows="#{genreController.rowsCount}"
+                                     first="#{genreController.first}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     style="margin:5px" lazy="true"
+                                     rowsPerPageTemplate="20,50,100">
+
+                            <f:facet name="header">
+                                <p:outputLabel value="#{lang.founded}: #{genreController.genrePages.totalElements}"
+                                               id="genreCount"/>
+                            </f:facet>
+
+                            <p:column headerText="#{lang.name}">
+                                <p:commandLink title="#{lang.edit}" action="#{genreController.edit()}"
+                                               update="@([id$=dialogGenre])" process="@form" immediate="true">
+                                    <h:outputText value="#{genre.name}"/>
+                                    <f:setPropertyActionListener value="#{genre}"
+                                                                 target="#{genreController.selectedGenre}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Удаление -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.delete}"
+                                               action="#{genreController.delete()}"
+                                               update="@([id$=genreList])" process="@form"
+                                               immediate="true">
+                                    <o:graphicImage name="images/delete.png" styleClass="delete-icon" dataURI="true"/>
+                                    <p:confirm header="#{lang.confirm}" message="#{lang.prompt_delete}?"
+                                               icon="ui-icon-alert"/>
+                                    <f:setPropertyActionListener value="#{genre}"
+                                                                 target="#{genreController.selectedGenre}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Редактирование -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.edit}" action="#{genreController.edit()}"
+                                               update="@([id$=dialogGenre])" process="@form" immediate="true">
+                                    <o:graphicImage name="images/edit.png" styleClass="edit-icon" dataURI="true"/>
+                                    <f:setPropertyActionListener value="#{genre}"
+                                                                 target="#{genreController.selectedGenre}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <!-- Модальное коно редактирования жанра -->
+                    <p:dialog id="dialogGenre" header="#{lang.genre}" widgetVar="dialogGenre" resizable="false"
+                              modal="true"
+                              showEffect="fade"
+                              closeOnEscape="true">
+
+                        <h:form id="dialogGenreForm">
+                            <div class="popup-info">
+                                <div class="ava-info no-border">
+                                    <div class="block">
+                                        <p>#{lang.subj_name}</p>
+                                        <div class="ava-form">
+                                            <p:inputText id="nameGenre" value="#{genreController.selectedGenre.name}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="block">
+                                        <div class="ava-form">
+                                            <p:commandButton value="#{lang.save}"
+                                                             actionListener="#{genreController.save}"
+                                                             update="@([id$=genreList])"
+                                                             process="@([id$=dialogGenreForm])" style="float:right"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                </p:tab>
+
+                <!-- Вкладка редактирования издателей -->
+                <p:tab title="#{lang.publishers}" id="tabPublishers">
+                    <h:form id="publisherForm">
+                        <p:dataTable id="publisherList" var="publisher" value="#{publisherController.lazyModel}"
+                                     paginatorPosition="bottom"
+                                     paginator="true"
+                                     rows="#{publisherController.rowsCount}"
+                                     first="#{publisherController.first}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     style="margin:5px" lazy="true"
+                                     rowsPerPageTemplate="20,50,100">
+
+                            <f:facet name="header">
+                                <p:outputLabel
+                                        value="#{lang.founded}: #{publisherController.publisherPages.totalElements}"
+                                        id="publisherCount"/>
+                            </f:facet>
+
+                            <p:column headerText="#{lang.name}">
+                                <p:commandLink title="#{lang.edit}" action="#{publisherController.edit()}"
+                                               update="@([id$=dialogPublisher])" process="@form" immediate="true">
+                                    <h:outputText value="#{publisher.name}"/>
+                                    <f:setPropertyActionListener value="#{publisher}"
+                                                                 target="#{publisherController.selectedPublisher}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Удаление -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.delete}"
+                                               action="#{publisherController.delete()}"
+                                               update="@([id$=publisherList])" process="@form"
+                                               immediate="true"
+                                               id="deletePublisher">
+                                    <o:graphicImage name="images/delete.png" styleClass="delete-icon" dataURI="true"/>
+                                    <p:confirm header="#{lang.confirm}" message="#{lang.prompt_delete}?"
+                                               icon="ui-icon-alert"/>
+                                    <f:setPropertyActionListener value="#{publisher}"
+                                                                 target="#{publisherController.selectedPublisher}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <!-- Колонка - Редактирование -->
+                            <p:column style="width:50px">
+                                <p:commandLink title="#{lang.edit}" action="#{publisherController.edit()}"
+                                               update="@([id$=dialogPublisher])" process="@form" immediate="true">
+                                    <o:graphicImage name="images/edit.png" styleClass="edit-icon" dataURI="true"/>
+                                    <f:setPropertyActionListener value="#{publisher}"
+                                                                 target="#{publisherController.selectedPublisher}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <!-- Моадльное окно редактирования издателя -->
+                    <p:dialog id="dialogPublisher" header="#{lang.publisher}" widgetVar="dialogPublisher"
+                              resizable="false"
+                              modal="true"
+                              showEffect="fade"
+                              closeOnEscape="true">
+
+                        <h:form id="dialogPublisherForm">
+                            <div class="popup-info">
+                                <div class="ava-info no-border">
+                                    <div class="block">
+                                        <p>#{lang.subj_name}</p>
+                                        <div class="ava-form">
+                                            <p:inputText id="namePublisher"
+                                                         value="#{publisherController.selectedPublisher.name}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="block">
+                                        <div class="ava-form">
+                                            <p:commandButton value="#{lang.save}"
+                                                             actionListener="#{publisherController.save}"
+                                                             update="@([id$=publisherList])"
+                                                             process="@([id$=dialogPublisherForm])"
+                                                             style="float:right"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                </p:tab>
+            </p:tabView>
+        </ui:define>
+
+        <!-- Поиск справочных значений -->
+        <ui:define name="search">
+            <p:inputText style="margin-right:10px" placeholder="#{lang.search}"
+                         value="#{directoryController.searchText}"
+                         id="searchInput"/>
+            <p:commandButton value="#{lang.search}" actionListener="#{directoryController.search}" process="@form"/>
+        </ui:define>
+    </ui:composition>
+</h:body>
 </html>

@@ -9,13 +9,11 @@
       xmlns:p="http://primefaces.org/ui">
 
 <!-- Хедер -->
-
 <f:view>
     <div class="header-div">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
                     <div style="width: 50%">
                         <ul class="nav navbar-nav">
                             <ui:fragment>
@@ -23,14 +21,16 @@
                             </ui:fragment>
 
                             <ui:fragment rendered="${userController.role('ADMIN')}">
-                                <li><h:outputLink value="#{request.contextPath}/pages/directory.xhtml"> #{lang.dict}</h:outputLink></li>
+                                <li>
+                                    <h:outputLink value="#{request.contextPath}/pages/directory.xhtml"> #{lang.dict}</h:outputLink>
+                                </li>
                             </ui:fragment>
 
                             <ui:fragment rendered="${userController.role('ADMIN')}">
                                 <li class="colored">
                                     <p:commandLink title="Add button"
                                                    rendered="${userController.role('ADMIN')}"
-                                                   actionListener="#{bookController.search}"
+                                                   actionListener="#{bookController.add()}"
                                                    update="@([id$=dialogEditBook])"
                                                    styleClass="new-book-item">
                                         <p:outputLabel value="#{lang.add_book}" styleClass="new-book-label"/>
@@ -52,7 +52,7 @@
                                                  value="search"
                                                  process="@form"
                                                  update="@([id$=booksList]) "
-                                                 actionListener="#{bookController.search}"
+                                                 actionListener="#{bookController.search()}"
                                                  style="visibility: hidden"/>
                             </h:form>
                         </div>
@@ -76,5 +76,4 @@
         </f:facet>
     </p:ajaxStatus>
 </f:view>
-
 </html>

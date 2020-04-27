@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/**").permitAll()
             .antMatchers("/pages/directory.xhtml").hasRole("ADMIN") // К названию роли автоматически добавляется префикс ROLE_
             .antMatchers("/pages/books.xhtml").hasAnyRole("ADMIN", "USER")
+            .anyRequest().authenticated()
             .and()
             .exceptionHandling().accessDeniedPage("/index.xhtml") // При ошибке доступа - перенаправление на страницу авторизации
             .and()

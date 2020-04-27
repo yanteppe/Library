@@ -37,7 +37,8 @@ public class FacesConfig {
 
    @Bean
    public ServletRegistrationBean servletRegistrationBean(MultipartConfigElement multipartConfigElement) {
-      var servletRegistrationBean = new ServletRegistrationBean(new FacesServlet(), "*.xhtml", "/javax.faces.resource/*");
+      FacesServlet facesServlet = new FacesServlet();
+      var servletRegistrationBean = new ServletRegistrationBean(facesServlet, "*.xhtml", "/javax.faces.resource/*");
       servletRegistrationBean.setMultipartConfig(multipartConfigElement);
       return servletRegistrationBean;
    }
