@@ -8,6 +8,7 @@ import java.util.Locale;
 @ManagedBean(eager = true)
 @SessionScoped
 public class LocaleChanger implements Serializable {
+   // Выбранная локаль пользователя на время сессии (@SessionScoped)
    private Locale currentLocale = new Locale("ru");
 
    public LocaleChanger() {
