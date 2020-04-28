@@ -9,14 +9,14 @@ public class CookieHelper {
    public static final String COOKIE_LANG = "spring-library-lang";
 
    public static void setCookie(String name, String value, int expiry) {
-      var facesContext = FacesContext.getCurrentInstance();
-      var request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+      FacesContext facesContext = FacesContext.getCurrentInstance();
+      HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
       Cookie cookie = null;
       Cookie[] userCookies = request.getCookies();
-      if (userCookies != null && userCookies.length > 0) {
-         for (var userCookie : userCookies) {
-            if (userCookie.getName().equals(name)) {
-               cookie = userCookie;
+      if (userCookies != null && userCookies.length > 0 ) {
+         for (int i = 0; i < userCookies.length; i++) {
+            if (userCookies[i].getName().equals(name)) {
+               cookie = userCookies[i];
                break;
             }
          }
@@ -34,14 +34,14 @@ public class CookieHelper {
    }
 
    public static Cookie getCookie(String name) {
-      var facesContext = FacesContext.getCurrentInstance();
+      FacesContext facesContext = FacesContext.getCurrentInstance();
       HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
       Cookie cookie = null;
       Cookie[] userCookies = request.getCookies();
-      if (userCookies != null && userCookies.length > 0) {
-         for (var userCookie : userCookies) {
-            if (userCookie.getName().equals(name)) {
-               cookie = userCookie;
+      if (userCookies != null && userCookies.length > 0 ) {
+         for (int i = 0; i < userCookies.length; i++) {
+            if (userCookies[i].getName().equals(name)) {
+               cookie = userCookies[i];
                return cookie;
             }
          }

@@ -3,7 +3,6 @@ package com.library.jsf.model;
 import com.library.jsf.controller.JSFController;
 import lombok.Getter;
 import lombok.Setter;
-import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.springframework.data.domain.Page;
@@ -19,6 +18,7 @@ import java.util.Map;
  */
 @Getter @Setter
 public class LazyDataTable<T> extends LazyDataModel<T> {
+   private List<T> list;
    private JSFController<T> jsfController;
 
    public LazyDataTable(JSFController<T> jsfController) {
@@ -30,24 +30,26 @@ public class LazyDataTable<T> extends LazyDataModel<T> {
     * Результат выполнения метода передается на страницу books.xhtml в component.<br>
     * src/main/webapp/pages/books.xhtml
     *
-    * @param first ервая страница
+    * @param first первая страница
     * @param pageCount кол-во страниц
     * @param sortingField параметр сортировки
     * @param sortOrder тип сортировки (ASC, DESC)
-    * @param filterBy
+    * @param filters
     * @return content List<'T'>
     */
    @Override
-   public List<T> load(int first, int pageCount, String sortingField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+   public List<T> load(int first, int pageCount, String sortingField, SortOrder sortOrder, Map<String, Object> filters) {
       int pageNumber = first / pageCount;     // Определение под каким номером страницу нужно отобразить
       var sortDirection = Sort.Direction.ASC; // По умолчанию сортировка по возрастанию
       if (sortOrder != null) {
          // Все текущие настройки DataTable (сортировка, поле сортировки) будут передаваться в SQL запрос
-         if (sortOrder == SortOrder.DESCENDING) {
-            sortDirection = Sort.Direction.DESC;
+         switch (sortOrder) {
+            case DESCENDING:
+               sortDirection = Sort.Direction.DESC;
+               break;
          }
       }
-      Page<T> collectingDataResult = jsfController.collectData(pageNumber, pageCount, sortingField, sortDirection);
+      Page<T> collectingDataResult = jsfController.search(pageNumber, pageCount, sortingField, sortDirection);
       /*
        Передача в родительский класс LazyDataModel<T> кол-во найденых строк и элементов.
        Обязательная операция для верной работы LazyDataModel<T>.

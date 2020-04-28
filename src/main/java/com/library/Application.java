@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 // scanBasePackages = {"com.library"} - указание в с какого пакета искать бины.
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 @SpringBootApplication
 public class Application {
    public static void main(String[] args) {

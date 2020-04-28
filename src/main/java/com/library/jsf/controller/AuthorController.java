@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -31,7 +31,7 @@ public class AuthorController implements JSFController<Author> {
 
    @PostConstruct
    public void init() {
-      lazyModel = new LazyDataTable(this);
+      lazyModel = new LazyDataTable<>(this);
    }
 
    @Override
@@ -55,13 +55,12 @@ public class AuthorController implements JSFController<Author> {
 
    public void save() {
       authorDAO.save(selectedAuthor);
-      PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').hide()");
-      //PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogAuthor').hide()");
-      //PrimeRequestContext.getCurrentInstance().execute("PF('dialogAuthor').hide()");
+      RequestContext.getCurrentInstance().execute("PF('dialogAuthor').hide()");
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').hide()");
    }
 
    @Override
-   public Page<Author> collectData(int first, int count, String sortingField, Sort.Direction sortDirection) {
+   public Page<Author> search(int first, int count, String sortingField, Sort.Direction sortDirection) {
       return authorPages;
    }
 
@@ -69,8 +68,8 @@ public class AuthorController implements JSFController<Author> {
     * Показать диалоговое окно с редактированием автора со значениями selectedAuthor.
     */
    private void showEditAuthorModal() {
-      PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
-      //RequestContext.getCurrentInstance().execute("PF('dialogAuthor').show()");
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
+      RequestContext.getCurrentInstance().execute("PF('dialogAuthor').show()");
    }
 
    public List<Author> find(String fio) {

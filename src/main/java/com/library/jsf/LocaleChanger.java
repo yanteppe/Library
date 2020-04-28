@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.Locale;
 
+//@ManagedBean
 @ManagedBean(eager = true)
 @SessionScoped
 public class LocaleChanger implements Serializable {

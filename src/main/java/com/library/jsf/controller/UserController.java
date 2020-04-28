@@ -12,9 +12,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.util.ResourceBundle;
 
-@Component
+//@Named - не работает (не разобрался)
 @ManagedBean
 @ViewScoped
+@Component
 @Getter @Setter
 public class UserController {
    private String username;
@@ -31,7 +32,7 @@ public class UserController {
     * @return boolean
     */
    public boolean role(String role) {
-      return getCurrentUser().getAuthorities().stream().filter(x -> x.getAuthority().equals("ROLE_" + role)).count() > 0;
+      return getCurrentUser().getAuthorities().stream().anyMatch(x -> x.getAuthority().equals("ROLE_" + role));
    }
 
    /**

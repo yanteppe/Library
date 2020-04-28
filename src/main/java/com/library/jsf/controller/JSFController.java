@@ -13,7 +13,7 @@ import java.io.Serializable;
 public interface JSFController<T> extends Serializable {
 
    // Постраничное отображение книг
-   Page<T> collectData(int first, int count, String sortingField, Sort.Direction sortDirection);
+   Page<T> search(int first, int count, String sortingField, Sort.Direction sortDirection);
 
    void add();
 

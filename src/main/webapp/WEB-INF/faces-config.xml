@@ -16,7 +16,7 @@
             <base-name>library</base-name>
             <var>lang</var> <!-- lang - переменная с помощью которой будет обращение к ресурсу с локалями -->
         </resource-bundle>
-        <!-- Класс Spring-a для связывание JSF и Spring контейнеро. Чтобы видели бины друг друга -->
+        <!-- Класс Spring-a для связывание JSF и Spring контейнеров. Чтобы видели бины друг друга -->
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
         <el-resolver>org.springframework.web.jsf.el.WebApplicationContextFacesELResolver</el-resolver>
     </application>

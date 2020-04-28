@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 import org.apache.commons.io.IOUtils;
-import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.SortOrder;
@@ -23,7 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -74,9 +73,8 @@ public class BookController implements JSFController<Book> {
          selectedBook.setContent(uploadedBookContent);
       }
       bookDAO.save(selectedBook);
-      //PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').hide()");
-      PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').hide()");
-      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').hide()");// вызов JS из java кода
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').hide()");
+      RequestContext.getCurrentInstance().execute("PF('dialogEditBook').hide()");// вызов JS из java кода
    }
 
    @Override
@@ -84,8 +82,8 @@ public class BookController implements JSFController<Book> {
       selectedBook = new Book();
       uploadedBookCoverImage = loadDefaultCoverBookImage();
       uploadedBookContent = null;
-      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
-      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+      //PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
+      RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
    }
 
    private byte[] loadDefaultCoverBookImage() {
@@ -104,9 +102,8 @@ public class BookController implements JSFController<Book> {
       uploadedBookCoverImage = selectedBook.getCoverImage();
       // При нажатии на редактирование книги выбранный объект Book уже будет записан в переменную selectedBook
       // Книга отобразится в диалоговом окне
-      PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
-      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogEditBook').show()");
-      //RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
+      //PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute().add("PF('dialogEditBook').show()");
+      RequestContext.getCurrentInstance().execute("PF('dialogEditBook').show()");
    }
 
    @Override
@@ -132,7 +129,7 @@ public class BookController implements JSFController<Book> {
     * @return объект Page, страница с информацией о содержащихся на ней данных
     */
    @Override
-   public Page<Book> collectData(int pageNumber, int pageCount, String sortingField, Sort.Direction sortDirection) {
+   public Page<Book> search(int pageNumber, int pageCount, String sortingField, Sort.Direction sortDirection) {
       // Если не указан параемтр сортировки то по умолчанию сортируется по name
       if (sortingField == null) sortingField = "name";
       if (searchType == null) {
@@ -231,7 +228,7 @@ public class BookController implements JSFController<Book> {
     */
    public void uploadBookCoverImage(FileUploadEvent event) {
       if (event.getFile() != null) {
-         uploadedBookCoverImage = event.getFile().getContent();
+         uploadedBookCoverImage = event.getFile().getContents();
       }
    }
 
@@ -240,7 +237,7 @@ public class BookController implements JSFController<Book> {
     */
    public void uploadBookPDFContent(FileUploadEvent event) {
       if (event.getFile() != null) {
-         uploadedBookContent = event.getFile().getContent();
+         uploadedBookContent = event.getFile().getContents();
       }
    }
 
