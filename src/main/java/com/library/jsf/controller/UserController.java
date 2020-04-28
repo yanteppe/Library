@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.util.ResourceBundle;
 
-//@Named - не работает (не разобрался)
 @ManagedBean
 @ViewScoped
 @Component

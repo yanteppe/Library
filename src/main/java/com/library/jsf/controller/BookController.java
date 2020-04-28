@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RateEvent;
 import org.primefaces.model.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -253,5 +254,27 @@ public class BookController implements JSFController<Book> {
     */
    public void updateViewCount(long viewCount, long bookId) {
       bookDAO.updateBookViewCount(viewCount + 1, bookId);
+   }
+
+   /**
+    * Вызывается при голосовании за книгу
+    */
+   public void onRate(RateEvent rateEvent) {
+      Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+      int bookIndex = Integer.parseInt(params.get("bookIndex")); // Параметр индекса книги, который передается со страницы
+      Book book = bookPages.getContent().get(bookIndex);         // Получение книги по индексу за которую проголосовали
+      long currentRating = Long.valueOf(rateEvent.getRating().toString()).longValue();
+      long newRating = book.getTotalRating() + currentRating;
+      long newVoteCount = book.getTotalVoteCount()+1;
+      int newAvgRating = calcAverageRating(newRating, newVoteCount);
+      bookDAO.updateBookRating(newRating, newVoteCount, newAvgRating, book.getId());
+   }
+
+   public int calcAverageRating(long totalRating, long totalVoteCount) {
+      if (totalRating == 0 || totalVoteCount == 0) {
+         return 0;
+      }
+      int averageRating = Long.valueOf(totalRating / totalVoteCount).intValue();
+      return averageRating;
    }
 }

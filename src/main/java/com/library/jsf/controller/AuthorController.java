@@ -68,8 +68,8 @@ public class AuthorController implements JSFController<Author> {
     * Показать диалоговое окно с редактированием автора со значениями selectedAuthor.
     */
    private void showEditAuthorModal() {
-      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
       RequestContext.getCurrentInstance().execute("PF('dialogAuthor').show()");
+      //PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add("PF('dialogAuthor').show()");
    }
 
    public List<Author> find(String fio) {

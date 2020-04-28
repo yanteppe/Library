@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Getter @Setter
 public class LazyDataTable<T> extends LazyDataModel<T> {
-   private List<T> list;
+   private transient List<T> list;
    private JSFController<T> jsfController;
 
    public LazyDataTable(JSFController<T> jsfController) {
