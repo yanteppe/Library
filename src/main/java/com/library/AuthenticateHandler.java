@@ -22,6 +22,6 @@ public class AuthenticateHandler implements AuthenticationFailureHandler {
       HttpSession session = httpServletRequest.getSession(false);
       if (session != null) session.setAttribute("loginFailed", "login failed");
       if (response.isCommitted()) return;
-      redirectStrategy.sendRedirect(httpServletRequest, response, "/index.xhtml");
+      redirectStrategy.sendRedirect(httpServletRequest, response, "index.xhtml");
    }
 }
